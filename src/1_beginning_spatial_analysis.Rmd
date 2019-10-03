@@ -119,7 +119,18 @@ combined? How does this compare to Minnesota?
 y axis (check out geom_histogram)
 
 ```{r}
+iowa_minnesota <- states %>%
+  filter(name %in% c('Iowa','Minnesota')) %>%
+  st_transform(2163)
 
+iowa_minnesota_lakes <- spatial_lakes %>%
+  st_join(.,iowa_minnesota) %>%
+  filter(!is.na(name))
+
+ggplot(iowa_minnesota_lakes,aes(lake_area_ha)) +
+  geom_histogram() +
+  facet_wrap(~name,dir='v') +
+  scale_x_log10() 
 
 ```
 
